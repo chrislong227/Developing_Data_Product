@@ -1,0 +1,54 @@
+---
+title: "Housing Price Prediction"
+author: "Chris Long"
+highlighter: highlight.js
+output: pdf_document
+job: null
+knit: slidify::knit2slides
+mode: selfcontained
+hitheme: tomorrow
+subtitle: Using the New Jersey Data in 2001
+framework: io2012
+widgets: []
+---
+
+## How much can you sell your home in 2001
+
+This topic may be of interest to some people who are concerned about the rising price over the last decades. Features that would influence the housing price:
+
+- Number of Bedrooms, Bathrooms (the area of your home)
+- the quality of your neighborhood
+- Environment
+
+--- .class1 #id
+
+## The R Dataset
+
+The homeprice Dataset is quite useful for this topic. It has the room data and neighborhood data with which we can do regression analysis.
+
+```{r, echo = TRUE, include =FALSE}
+library(UsingR)
+```
+```{r, echo = TRUE}
+data("homeprice")
+head(homeprice)
+```
+
+---
+
+## Regression Model
+
+Fit a linear model to estimate sale price against other variables excluding list price.
+```{r, echo = TRUE}
+lmModel = lm(sale ~ full + half + bedrooms + rooms + neighborhood, data = homeprice)
+summary(lmModel)$coefficients
+summary(lmModel)$r.squared
+```
+
+---  fill
+
+## Predict the Housing Price
+
+Prediction with an interactive Shiny App:
+
+<img height='500' width = '1000' src="assets/img/ShinyApp.png" />
