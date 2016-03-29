@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!-- saved from url=(0109)file:///C:/Users/Chris%20Long/Documents/GitHub/Developing_Data_Product/Housing%20Price%20Predictor/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Housing Price Prediction</title>
+  
+  <meta name="description" content="Housing Price Prediction">
+  <meta name="author" content="Chris Long">
+  <meta name="generator" content="slidify">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="./Housing Price Prediction_files/default.css" media="all">
+  <link rel="stylesheet" href="./Housing Price Prediction_files/phone.css" media="only screen and (max-device-width: 480px)">
+  <link rel="stylesheet" href="./Housing Price Prediction_files/slidify.css">
+  <link rel="stylesheet" href="./Housing Price Prediction_files/tomorrow.css">
+  <script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="slides" src="./Housing Price Prediction_files/slides.js"></script><script type="text/javascript" charset="utf-8" async="" data-requirecontext="_" data-requiremodule="order" src="./Housing Price Prediction_files/order.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide_config" src="./Housing Price Prediction_files/slide_config.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="modernizr.custom.45394" src="./Housing Price Prediction_files/modernizr.custom.45394.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="hammer" src="./Housing Price Prediction_files/hammer.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-controller" src="./Housing Price Prediction_files/slide-controller.js"></script><script type="text/javascript" charset="utf-8" data-requirecontext="_" data-requiremodule="slide-deck" src="./Housing Price Prediction_files/slide-deck.js"></script><!--<base target="_blank">--><base href="." target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel="stylesheet" href="./Housing Price Prediction_files/ribbons.css">
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="./Housing Price Prediction_files/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" src="./Housing Price Prediction_files/require-1.0.8.min.js">
+  </script>
+  
+  
+
+<link rel="stylesheet" href="./Housing Price Prediction_files/css"></head>
+<body style="opacity: 0" class="loaded">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground current">
+  <hgroup class="auto-fadein">
+    <h1>Housing Price Prediction</h1>
+    <h2>Using the New Jersey Data in 2001</h2>
+    <p>Chris Long<br></p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="next" id="slide-1" style="background:;">
+  <hgroup>
+    <h2>How much can you sell your home in 2001</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This topic may be of interest to some people who are concerned about the rising price over the last decades. Features that would influence the housing price:</p>
+
+<ul>
+<li>Number of Bedrooms, Bathrooms (the area of your home)</li>
+<li>the quality of your neighborhood</li>
+<li>Environment</li>
+</ul>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class1 far-next" id="id" style="background:;">
+  <hgroup>
+    <h2>The R Dataset</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The homeprice Dataset is quite useful for this topic. It has the room data and neighborhood data with which we can do regression analysis.</p>
+
+<pre><code class="r">data(<span class="string">"homeprice"</span>)
+head(homeprice)
+</code></pre>
+
+<pre><code class="vala"><span class="preprocessor">##    list  sale full half bedrooms rooms neighborhood</span>
+<span class="preprocessor">## 1  80.0 117.7    1    0        3     6            1</span>
+<span class="preprocessor">## 2 151.4 151.0    1    0        4     7            1</span>
+<span class="preprocessor">## 3 310.0 300.0    2    1        4     9            3</span>
+<span class="preprocessor">## 4 295.0 275.0    2    1        4     8            3</span>
+<span class="preprocessor">## 5 339.0 340.0    2    0        3     7            4</span>
+<span class="preprocessor">## 6 337.5 337.5    1    1        4     8            3</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-3" style="background:;">
+  <hgroup>
+    <h2>Regression Model</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Fit a linear model to estimate sale price against other variables excluding list price.</p>
+
+<pre><code class="r">lmModel = lm(sale ~ full + half + bedrooms + rooms + neighborhood, data = homeprice)
+summary(lmModel)$coefficients
+</code></pre>
+
+<pre><code class="vala"><span class="preprocessor">##                 Estimate Std. Error    t value     Pr(&gt;|t|)</span>
+<span class="preprocessor">## (Intercept)  -135.262817   37.28315 -3.6279879 1.409919e-03</span>
+<span class="preprocessor">## full           26.225141   13.89585  1.8872648 7.180881e-02</span>
+<span class="preprocessor">## half           43.242340   12.83009  3.3703838 2.641273e-03</span>
+<span class="preprocessor">## bedrooms       20.409119   17.79774  1.1467255 2.632851e-01</span>
+<span class="preprocessor">## rooms           6.487697   10.38302  0.6248372 5.382280e-01</span>
+<span class="preprocessor">## neighborhood   77.242767   10.07700  7.6652562 8.859380e-08</span>
+</code></pre>
+
+<pre><code class="r">summary(lmModel)$r.squared
+</code></pre>
+
+<pre><code class="vala"><span class="preprocessor">## [1] 0.907884</span>
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="" id="slide-4" style="background:;">
+  <hgroup>
+    <h2>Predict the Housing Price</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>Prediction with an interactive Shiny App:</p>
+
+<p><img height="500" width="1000" src="./Housing Price Prediction_files/ShinyApp.png"></p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id="io2012-ptoc" style="display:none;">
+    <ul>
+      <li>
+      <a href="file:///C:/Users/Chris%20Long/Documents/GitHub/Developing_Data_Product/Housing%20Price%20Predictor/index.html#" target="_self" rel="tooltip" data-slide="1" title="How much can you sell your home in 2001">
+         1
+      </a>
+    </li>
+    <li>
+      <a href="file:///C:/Users/Chris%20Long/Documents/GitHub/Developing_Data_Product/Housing%20Price%20Predictor/index.html#" target="_self" rel="tooltip" data-slide="2" title="The R Dataset">
+         2
+      </a>
+    </li>
+    <li>
+      <a href="file:///C:/Users/Chris%20Long/Documents/GitHub/Developing_Data_Product/Housing%20Price%20Predictor/index.html#" target="_self" rel="tooltip" data-slide="3" title="Regression Model">
+         3
+      </a>
+    </li>
+    <li>
+      <a href="file:///C:/Users/Chris%20Long/Documents/GitHub/Developing_Data_Product/Housing%20Price%20Predictor/index.html#" target="_self" rel="tooltip" data-slide="4" title="Predict the Housing Price">
+         4
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="./Housing Price Prediction_files/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </body></html>
